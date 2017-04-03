@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+		<meta charset="utf-8">
+                <script src="jquery-2.1.0.js"></script>
+                <script>
+			// See the JQuery documentation at ... 
+			// http://api.jquery.com/
+			// http://learn.jquery.com/
+			// See my JQuery and Ajax notes 
+
+			// show and hide the playForm and the newGameForm
+			var started=false;
+			function showPlayForm(value){
+				if(value != 0){
+					$('#playForm').show();
+					$('#newGameForm').hide();
+				} else {
+					$('#playForm').hide();
+					$('#newGameForm').show();
+				}	
+			}
+
+			// User requests a new game
+			function newGame(){
+				started=true;
+				$.getJSON("newGame.php", function(data){
+					if(data['status']=='ok'){
+						showPlayForm(1);
+						$("#status").html("");
+					} else {
+						$("#status").html('Error starting new game');
+					}
+				});
+
+			}
+				
+			// User makes a guess of param at the secret number
+			function guess(param){
+				// Ajax request goes here...
+				$.getJSON("guess.php", {guess: param}, function(data){
+					if(data['status']=='ok'){
+						getHistory();
+					} else {
+						$('#status').html(data['status']);
+					}				
+				});
+				$('#guessText').val("");
+				
+			}
+			// Request the history from the server
+			function getHistory(){
+				$.getJSON("getHistory.php", function(data){
+					if(data['status']=='ok'){
+						var html="";
+						for(var i=0; i < data['history'].length; i++){
+							var text="";
+							if(data['history'][i]['comparison']=="<"){
+								html+="<br/>"+"Guess "+(i+1)+": "+data['history'][i]['guess']+" is too small";	
+							} else if (data['history'][i]['comparison']==">"){
+								html+="<br/>"+"Guess "+(i+1)+": "+data['history'][i]['guess']+" is too large";
+							} else {
+								 html+="<br/>"+"Guess "+(i+1)+": "+data['history'][i]['guess']+" is correct";
+								 showPlayForm(0);
+							}
+						}
+					$('#status').html(html);
+					} 
+				});
+			}
+
+			// This is executed when the document is ready (the DOM for this document is loaded)
+			$(function(){
+				var started = localStorage['started'];
+				if(!started){
+					showPlayForm(0);
+					localStorage['started']="yes";
+				} else {
+					showPlayForm(1);
+					getHistory();
+				}
+
+				$('#newGameButton').click(function(){
+					newGame();
+				});
+				$('#guessButton').click(function(){
+					guess($('#guessText').val());
+				});				
+			});
+		</script>
+	</head>
+	<!-- DO NOT ALTER ANY OF THE HTML BELOW -->
+	<body>
+		<h3>Guess Game</h3>
+		<div id="history"> </div>
+		<form id="playForm"> 
+			<input type="text" id="guessText" /> 
+			<input id="guessButton" type="button" value="guess" />
+		</form>
+		<form id="newGameForm">
+			<input id="newGameButton" type="button" value="new game" />
+		</form>
+		<div id="status"></div>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+			<title>ABC Cabinet</title>
+			<style>
+				table, th, td {
+    					border: 1px solid black;
+				}
+			</style>
+		</head>
+		<body>
+			<h2>ABC Cabinet</h2>
+			<hr>
+			<h3>Navigation</h3>
+			<nav>
+				<a href="main.html">Main Page</a> <br>
+				<a href="#">Order Page</a>
+			</nav>	
+			<hr>	
+			<h3>Order Form</h3>
+			<form method="post" action="http://www.cs.toronto.edu/~arnold/cgi-bin/environment.cgi" >
+				<label>Name: </label> <input type="text" name="name" size="25" /><br><br>
+				<label>Address: <br>
+					<textarea name="address" cols=40 rows="4"></textarea>
+				</label>
+				<br><br>
+				<p>Method of Payment:
+					<br><label><input type="radio" name="payment" value="mastercard"/>MasterCard</label>
+					<br><label><input type="radio" name="payment" value="visa"/>Visa</label>
+					<br><label><input type="radio" name="payment" value="amex"/>Amex</label>
+				</p>
+					<label>Credit Card #: </label> 
+					<input type="text" name="cc" size="25" /><br>
+				<p>Items:
+					<br><label><input type="checkbox" name="singlecabinet" value="true"/>Single Cabinet $30.00</label>
+					<br><label><input type="checkbox" name="doublecabinet" value="true"/>Double Cabinet $50.00</label>
+					<br><label><input type="checkbox" name="drawer" value="true"/>Drawer $20.00</label>
+				</p>
+				<p>
+					<label>Color:</label>
+					<select name="color" size="1" >
+						<option>White</option>
+						<option>Black</option>
+						<option>Brown</option>		
+					</select>
+				</p>
+
+	
+			<input type="reset" value="Reset Form">
+			<input type="submit" value="Submit Form">
+		</form>
+		
+		</body>
+	</html>
+
+
+
